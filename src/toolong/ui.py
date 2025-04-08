@@ -23,6 +23,7 @@ class LogScreen(Screen):
 
     BINDINGS = [
         Binding("f1", "help", "Help"),
+        Binding("q", "quit", "Quit"),
     ]
 
     CSS = """
@@ -105,6 +106,10 @@ class CompareTokens:
 class UI(App):
     """The top level App object."""
 
+    BINDINGS = [
+        Binding("q", "quit", "Quit"),
+    ]
+
     @classmethod
     def sort_paths(cls, paths: list[str]) -> list[str]:
         return sorted(paths, key=CompareTokens)
@@ -117,6 +122,9 @@ class UI(App):
         self.save_merge = save_merge
         self.watcher = get_watcher()
         super().__init__()
+
+    def action_quit(self) -> None:
+        self.exit()
 
     async def on_mount(self) -> None:
         self.ansi_theme_dark = terminal_theme.DIMMED_MONOKAI
