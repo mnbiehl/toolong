@@ -203,20 +203,18 @@ class LogFooter(Widget):
                 await key_container.query("*").remove()
                 bindings = [
                     binding
-                    for (_, binding) in self.app.namespace_bindings.values()
-                    if binding.show
+                    for binding in self.app.binding_manager.active_bindings
+                    if binding.is_enabled
                 ]
-
                 await key_container.mount_all(
                     [
                         FooterKey(
                             binding.key,
-                            binding.key_display or binding.key,
+                            binding.display or binding.key,
                             binding.description,
                         )
                         for binding in bindings
-                        if binding.action != "toggle_tail"
-                        or (binding.action == "toggle_tail" and self.can_tail)
+                        if binding.action != "toggle_tail" or (binding.action == "toggle_tail" and self.can_tail)
                     ]
                 )
 
